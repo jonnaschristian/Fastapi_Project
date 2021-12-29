@@ -1,22 +1,26 @@
-from fastapi import FastAPI, Depends, status
-from typing import List
-from sqlalchemy.orm import Session
-from src.schemas.schemas import Produto, ProdutoSimples
-from src.infra.sqlalchemy.config.database import get_db, create_db
-from src.infra.sqlalchemy.repositorio.produto import RepositorioProduto
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from src.routers import rotas_produtos, rotas_usuarios
 
-create_db()
 
 app = FastAPI()
 
 
-@app.get('/produtos', status_code=status.HTTP_200_OK, response_model=List[ProdutoSimples])
-def listar_produtos(db: Session = Depends(get_db)):
-    produtos =  RepositorioProduto(db).listar()
-    return produtos
+# CORS
+origins = ['http://localhost:3000',
+           'https://myapp.vercel.com']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    )
 
 
-@app.post('/produtos', status_code=status.HTTP_201_CREATED, response_model=ProdutoSimples)
-def criar_produto(produto: Produto, db: Session = Depends(get_db)):
-    produto_criado = RepositorioProduto(db).criar(produto)
-    return produto_criado
+# Rotas Produtos
+app.include_router(rotas_produtos.router)
+
+# Usuários
+app.include_router(rotas_usuarios.router)
