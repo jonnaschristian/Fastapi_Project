@@ -2,7 +2,7 @@ from sqlalchemy import update, delete, select
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
-
+ 
 
 class RepositorioProduto():
     
@@ -51,3 +51,4 @@ class RepositorioProduto():
         )
         self.session.execute(delete_stmt)
         self.session.commit()
+    

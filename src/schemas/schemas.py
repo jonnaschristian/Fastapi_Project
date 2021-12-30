@@ -28,6 +28,20 @@ class UsuarioSimples(BaseModel):
     
     class Config:
         orm_mode = True
+        
+class LoginData(BaseModel):
+    telefone: str
+    senha: str
+    
+    class Config:
+        orm_mode = True
+        
+class LoginSucesso(BaseModel):
+    usuario: UsuarioSimples
+    access_token: str
+    
+    class Config:
+        orm_mode = True
     
     
 class Produto(BaseModel):
@@ -46,7 +60,15 @@ class Produto(BaseModel):
 class Pedido(BaseModel):
     id: Optional[int] = None
     quantidade: int
-    entrega: bool = True
-    endereco: str
-    observacoes: Optional[str] = 'Sem observações'
+    local_entrega: Optional[str]
+    tipo_entrega: str
+    observacao: Optional[str]
     
+    usuario_id: Optional[int]
+    produto_id: Optional[int]
+    
+    usuario: Optional[UsuarioSimples]
+    produto: Optional[ProdutoSimples]
+    
+    class Config:
+        orm_mode = True

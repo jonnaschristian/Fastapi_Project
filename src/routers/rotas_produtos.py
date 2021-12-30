@@ -34,5 +34,7 @@ def atualizar_produto(id: int, produto: Produto, session: Session = Depends(get_
 
 @router.delete('/produtos/{id}', status_code=status.HTTP_200_OK)
 def remover_produto(id: int, session: Session = Depends(get_db)):
-    RepositorioProduto(session).remover(id)
-    return
+    consulta = RepositorioProduto(session).remover(id)
+    if not consulta:
+        raise HTTPException(status_code=404, detail=f'Não há produto com o ID = {id}')
+    return {"msg": "Produto Removido"}
