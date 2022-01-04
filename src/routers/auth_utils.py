@@ -10,7 +10,7 @@ from jose import JWTError
 
 from src.infra.sqlalchemy.repositorio.repositorio_usuario import RepositorioUsuario
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='token')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl='auth/token')
 
 
 def obter_usuario_logado(token: str = Depends(oauth2_schema), session: Session = Depends(get_db)):

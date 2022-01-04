@@ -29,13 +29,12 @@ app.include_router(rotas_auth.router, prefix='/auth')
 app.include_router(rotas_pedidos.router)
 
 
+# Background
 @app.post('/send_email/{email}')
 def send_email(email: str, background: BackgroundTasks):
     background.add_task(write_notification, email, 'Olá tudo bem?!')
     return {'Ok': 'Mensagem enviada'}
     
-    
-
 
 # Middleware
 @app.middleware('http')

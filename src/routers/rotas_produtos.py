@@ -4,13 +4,15 @@ from sqlalchemy.orm import Session
 from src.schemas.schemas import Produto, ProdutoSimples
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositorio.repositorio_produto import RepositorioProduto
+from src.routers.auth_utils import obter_usuario_logado
+from src.schemas.schemas import LoginSucesso, Usuario, UsuarioSimples, LoginData
 
 
 router = APIRouter()
 
 
 @router.get('/produtos', status_code=status.HTTP_200_OK, response_model=List[Produto])
-def listar_produtos(session: Session = Depends(get_db)):
+def listar_produtos(usuario: Usuario = Depends(obter_usuario_logado), session: Session = Depends(get_db)):
     produtos =  RepositorioProduto(session).listar()
     return produtos
 
